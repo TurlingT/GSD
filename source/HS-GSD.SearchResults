@@ -1,0 +1,39 @@
+---- xianshimoshi Matches (38 in 6 files) ----
+KEY.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\key):			if(xianshimoshi == 1)
+KEY.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\key):			if(xianshimoshi == 2)
+KEY.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\key):			if(xianshimoshi == 1)
+KEY.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\key):			if(xianshimoshi == 2)
+KEY.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\key):			switch(xianshimoshi)
+KEY.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\key):						xianshimoshi = 2;
+KEY.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\key):							xianshimoshi = 1;
+KEY.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\key):			xianshimoshi = 0;				
+LCD.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\lcd):	xianshimoshi = 0;
+LCD.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\lcd):	xianshimoshi = 0;
+LCD.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\lcd):	switch(xianshimoshi){
+SENSOR.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\sensor):							 xianshimoshi =3;
+SENSOR.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\sensor):							 xianshimoshi =3;
+SENSOR.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\sensor):							 xianshimoshi =3;							
+SENSOR.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\sensor):								xianshimoshi =3;	
+SENSOR.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\sensor):								xianshimoshi =0;	
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):				xianshimoshi =3;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):				xianshimoshi =4;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):				xianshimoshi =3;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):				xianshimoshi =4;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):							xianshimoshi =4;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):			xianshimoshi =3;	
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):							  xianshimoshi = 2;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):									xianshimoshi = 3;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):									xianshimoshi = 4;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):							  xianshimoshi = 2;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):									xianshimoshi = 3;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):								xianshimoshi = 4;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):				xianshimoshi = 3;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):				xianshimoshi = 4;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):			xianshimoshi =3;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):			  xianshimoshi =3;
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):			       xianshimoshi = 3;// 正确		  	
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):				xianshimoshi = 4;// 失败			
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):			       xianshimoshi = 3;// 正确		  	
+SHEZHI.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\shezhi):				xianshimoshi = 4;// 失败			
+SYS_INIT.c (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\sys_init):u8 xianshimoshi =0;//显示模式0正常显示，1设置菜单，2输入模式，3正确，4错误
+Sys_init.h (e:\项目\济南火哨\城市燃气\software\hs-gsd\software\user\sys_init):extern u8 xianshimoshi;

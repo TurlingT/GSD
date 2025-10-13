@@ -1,0 +1,49 @@
+# VS Code logs
+.vscode/*.log
+.vscode/*.log.lock
+
+# Keil / MDK build outputs
+*.axf
+*.bin
+*.crf
+*.d
+*.dep
+*.elf
+*.hex
+*.iex
+*.lnp
+*.lst
+*.map
+*.obj
+*.o
+*.omf
+*.plg
+*.rpt
+*.sct
+*.tra
+*.__i
+*.mpf
+*.mpj
+*.edk
+*.ddk
+*.Administrator
+*.uvopt
+*.uvoptx
+*.uvguix.*
+
+# Temp files
+*.bak
+*.old
+*.tmp
+JLinkLog.txt
+
+# Keil auto-generated directories
+Listings/
+Objects/
+RTE/
+Build/
+out/
+tmp/
+
+# Optional: ignore HTML report files
+*.htm
