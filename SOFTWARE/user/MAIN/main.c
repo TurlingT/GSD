@@ -3,8 +3,8 @@
 * main.c
 *
 *
-* ÃèÊö
-* Õâ¸öÎÄ¼þÊµÏÖÖ÷³ÌÐòÏà¹Ø¹¦ÄÜº¯Êý.
+* æè¿°
+* è¿™ä¸ªæ–‡ä»¶å®žçŽ°ä¸»ç¨‹åºç›¸å…³åŠŸèƒ½å‡½æ•°.
 *
 *
 * (c) 2007 Jiwen Su
@@ -49,13 +49,13 @@ void device_load(void){
 	 	LCD_chushihua(i);
 		if(i<50)
 		{
-			sensor_chushihuachuanganqi();//³õÊ¼»¯´«¸ÐÆ÷ÐÅÏ¢
+			sensor_chushihuachuanganqi();//åˆå§‹åŒ–ä¼ æ„Ÿå™¨ä¿¡æ¯
 		}
 		Delay_ms(100);
 		SENSOR_DIAOYONG();
 		Delay_ms(900);
 		if(JCXI_qitileixing == 2){
-			//Èç¹ûÊÇÑõÆøÊä³ö15.15ma
+			//å¦‚æžœæ˜¯æ°§æ°”è¾“å‡º15.15ma
 			DIANLIU_420MA_SET((u16)((JCXI_420ma20-JCXI_420ma4)/JCXI_zuidaliangcheng*20.9 + JCXI_420ma4));
 		}
 	}
@@ -82,19 +82,19 @@ int main(void){
 	device_load();
 	while(1)
 	{
-		JIARE_DIAOYONG();//¼ÓÈÈÆ÷
-		SHOW_PANDUAN();//ÅÐ¶ÏÓÐÏÔÎÞÏÔ
-		SENSOR_DIAOYONG();//´«¸ÐÆ÷
-		SHUCHU_DIAOYONG();//ÐÅºÅÊä³ö
-		LCD_shuchu();//ÏÔÊ¾Êä³ö
-		KEY_MAIN_FUNC();//°´¼ü´¦Àí
+		JIARE_DIAOYONG();//åŠ çƒ­å™¨
+		SHOW_PANDUAN();//åˆ¤æ–­æœ‰æ˜¾æ— æ˜¾
+		SENSOR_DIAOYONG();//ä¼ æ„Ÿå™¨
+		SHUCHU_DIAOYONG();//ä¿¡å·è¾“å‡º
+		LCD_shuchu();//æ˜¾ç¤ºè¾“å‡º
+		KEY_MAIN_FUNC();//æŒ‰é”®å¤„ç†
 	}
 }
 //------------------------------------------------------------------
 
 //------------------------------------------------------------------
 /**
- * ÑÓ³Ùº¯Êý
+ * å»¶è¿Ÿå‡½æ•°
  */
 
 void Delay(int Count)
@@ -131,6 +131,6 @@ void Delay_ms(u16 ms)
 
 
 /********************************************************************
-					main.cµÄ³ÌÐòµ½´Ë½áÊø¡£
+					main.cçš„ç¨‹åºåˆ°æ­¤ç»“æŸã€‚
 *********************************************************************/
 

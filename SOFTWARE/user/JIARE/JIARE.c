@@ -1,7 +1,7 @@
 #include "includes.h"
 
 
-//ÒÔÏÂÊÇ¼ÓÈÈ·½·¨¶¨Òå
+//ä»¥ä¸‹æ˜¯åŠ çƒ­æ–¹æ³•å®šä¹‰
 //------------------------------------------------------------------------------
 void JIARE_INIT(void){
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -34,9 +34,9 @@ void JIARE_DUQUSHUJU(void){
 		}	
 		STM_ADC_NEW_DATA =FALSE;
 
-		//ÎÂ¶È²¹³¥
+		//æ¸©åº¦è¡¥å¿
 		wenducaijizhi = wendu/ADC_SAMPLE_NUM;
-		//ÎÂ¶È²¹³¥½áÊø
+		//æ¸©åº¦è¡¥å¿ç»“æŸ
 	}
 }
 //------------------------------------------------------------------

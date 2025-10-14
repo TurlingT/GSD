@@ -3,17 +3,17 @@
 * LOAD.c
 *
 *
-* ÃèÊö
-* Õâ¸öÎÄ¼şÊµÏÖÖ÷³ÌĞòÏà¹Ø¹¦ÄÜº¯Êı.
+* æè¿°
+* è¿™ä¸ªæ–‡ä»¶å®ç°ä¸»ç¨‹åºç›¸å…³åŠŸèƒ½å‡½æ•°.
 *
 *
 * (c) 2007 Jiwen Su
 *****************************************************************************/
 #include "includes.h"
 //---------------------------------------------------------------------------
-#define TIM_50US_DIV 50*36UL  //36MhzµÄÊ±ÖÓÆµÂÊ
+#define TIM_50US_DIV 50*36UL  //36Mhzçš„æ—¶é’Ÿé¢‘ç‡
 //---------------------------------------------------------------------------
-u32 FLASH_PARAMETER_GAS[FLASH_GAS_PARAMETER_POINT];// 4ma,20ma ,RELAY_ALARML_OR_ALARMH£¬485_ID
+u32 FLASH_PARAMETER_GAS[FLASH_GAS_PARAMETER_POINT];// 4ma,20ma ,RELAY_ALARML_OR_ALARMHï¼Œ485_ID
 
 //---------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ void YOR_JC_IN(void){
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//ÒÔÏÂÊÇLED³õÊ¼»¯
+//ä»¥ä¸‹æ˜¯LEDåˆå§‹åŒ–
 //---------------------------------------------------------------------------
 void LED_INIT(void){
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -46,11 +46,11 @@ void LED_INIT(void){
 //	LED_WORK_ON();
 }
 //---------------------------------------------------------------------------
-//ÒÔÏÂÊÇMODBUS³õÊ¼»¯
+//ä»¥ä¸‹æ˜¯MODBUSåˆå§‹åŒ–
 //-----------------------------------------------------------
 void ModbusTimersEnable( void ){
-  	TIM_ClearFlag(TIM6, TIM_FLAG_Update); //Çå³ıÒç³öÖĞ¶Ï±êÖ¾
-  	TIM_SetCounter(TIM6,0x00);			//ÇåÁã¼ÆÊıÆ÷Öµ
+  	TIM_ClearFlag(TIM6, TIM_FLAG_Update); //æ¸…é™¤æº¢å‡ºä¸­æ–­æ ‡å¿—
+  	TIM_SetCounter(TIM6,0x00);			//æ¸…é›¶è®¡æ•°å™¨å€¼
   	TIM_ITConfig(TIM6,TIM_IT_Update,ENABLE);
   	TIM_Cmd(TIM6,ENABLE);
 }
@@ -108,7 +108,7 @@ void USART1_Init(u32 BaudRate){
   	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
   	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
   	GPIO_Init(MODBUS_DIO_PORT, &GPIO_InitStructure); 
-	MODBUS_READ_DATA(); //³õÊ¼»¯Îª½ÓÊÕ×´Ì¬
+	MODBUS_READ_DATA(); //åˆå§‹åŒ–ä¸ºæ¥æ”¶çŠ¶æ€
   	/* Configure USART1 Tx (PA.09) as alternate function push-pull */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
@@ -145,16 +145,16 @@ void UART4_Init(u32 BaudRate){
 	USART_ITConfig(UART4,USART_IT_RXNE,ENABLE);
 	USART_NVIC_Configuration();
 
-	//´«¸ĞÆ÷±äÁ¿³õÊ¼»¯
+	//ä¼ æ„Ÿå™¨å˜é‡åˆå§‹åŒ–
 }
 //-----------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//ÒÔÏÂÊÇ¶¨Ê±Æ÷³õÊ¼»¯
+//ä»¥ä¸‹æ˜¯å®šæ—¶å™¨åˆå§‹åŒ–
 //------------------------------------------------------------------------------
 void TIM6_Init(void){
-	//ÀíÂÛÉÏ²ÉÓÃAPB1Ê±ÖÓÎª18Mhz£¬µ«ÊÇ±¶ÆµÁË£¬Êµ¼ÊÆµÂÊÎª36Mhz
-	//9600bpsµÄ3.5¸ö×Ö·ûµÄÊ±¼äÎª(11*3.5/9600)*1000ms = 4010us³¬Ê±,11bit°üÀ¨ÆğÊ¼Î»£¬Êı¾İÎ»£¬Í£Ö¹Î»ºÍĞ£ÑéÎ»
+	//ç†è®ºä¸Šé‡‡ç”¨APB1æ—¶é’Ÿä¸º18Mhzï¼Œä½†æ˜¯å€é¢‘äº†ï¼Œå®é™…é¢‘ç‡ä¸º36Mhz
+	//9600bpsçš„3.5ä¸ªå­—ç¬¦çš„æ—¶é—´ä¸º(11*3.5/9600)*1000ms = 4010usè¶…æ—¶,11bitåŒ…æ‹¬èµ·å§‹ä½ï¼Œæ•°æ®ä½ï¼Œåœæ­¢ä½å’Œæ ¡éªŒä½
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 
 	RCC_APB1PeriphClockCmd (RCC_APB1Periph_TIM6 , ENABLE);  //enable the WDG
@@ -169,14 +169,14 @@ void TIM6_Init(void){
   	TIM_PrescalerConfig(TIM6, TIM_50US_DIV, TIM_PSCReloadMode_Immediate);
 
   	/* TIM IT enable */
-  	TIM_ClearFlag(TIM6, TIM_FLAG_Update); //Çå³ıÒç³öÖĞ¶Ï±êÖ¾
+  	TIM_ClearFlag(TIM6, TIM_FLAG_Update); //æ¸…é™¤æº¢å‡ºä¸­æ–­æ ‡å¿—
   	TIM_ITConfig(TIM6, TIM_IT_Update, DISABLE);
 }
 //-----------------------------------------------------------
 
 //------------------------------------------------------------------------------
 void TIM2_Init(void){
-	//ÀíÂÛÉÏ²ÉÓÃAPB1Ê±ÖÓÎª18Mhz£¬100ms ÖĞ¶ÏÒ»´Î
+	//ç†è®ºä¸Šé‡‡ç”¨APB1æ—¶é’Ÿä¸º18Mhzï¼Œ100ms ä¸­æ–­ä¸€æ¬¡
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 
 	RCC_APB1PeriphClockCmd (RCC_APB1Periph_TIM2 , ENABLE);  //enable the WDG
@@ -223,9 +223,9 @@ void TIMER_Init(void){
 //-----------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//ÒÔÏÂÊÇ¶¨Ê±Æ÷³õÊ¼»¯
+//ä»¥ä¸‹æ˜¯å®šæ—¶å™¨åˆå§‹åŒ–
 void KEY_INPUT_GPIO_Init(void){
-// GPIO ³õÊ¼»¯º¯Êı
+// GPIO åˆå§‹åŒ–å‡½æ•°
 	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Pin = GPIO_KEY_INPUT_PORTA_PIN;	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
@@ -273,7 +273,7 @@ u8 KEY_CHECK(void){
 	if( i == GPIO_KEY_TIMEOUT){
 		if(key_return == KEY_1){
 			key_return = KEY_3;
-		}//Ğ£×¼
+		}//æ ¡å‡†
 		else if(key_return == KEY_2){
 			key_return = KEY_4;
 		}
@@ -289,7 +289,7 @@ u8 KEY_CHECK(void){
 //------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//ÒÔÏÂÊÇlcd³õÊ¼»¯
+//ä»¥ä¸‹æ˜¯lcdåˆå§‹åŒ–
 //---------------------------------------------------------------------------
 void LCD_Init_GPIO(void)
 {
@@ -299,7 +299,7 @@ void LCD_Init_GPIO(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(LCD_CONTROLL_PORTB,&GPIO_InitStructure);					 
-   	/* Ê¹ÄÜÒ»Ğ©pin */
+   	/* ä½¿èƒ½ä¸€äº›pin */
 	GPIO_InitStructure.GPIO_Pin = LCD_CONTROLL_PINAS;	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -308,7 +308,7 @@ void LCD_Init_GPIO(void)
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//!!!!!!!!!Ğ´NÎ»Êı¾İ!!!!!!!!
+//!!!!!!!!!å†™Nä½æ•°æ®!!!!!!!!
 void LCD_HT1621_wr_nbit(u8  N,u8  dat){
   	u8 i;
   	for(i=0;i<N;i++){
@@ -328,7 +328,7 @@ void LCD_HT1621_wr_nbit(u8  N,u8  dat){
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//!!!!!!!!!Ğ´9Î»Êı¾İ!!!!!!!!!!
+//!!!!!!!!!å†™9ä½æ•°æ®!!!!!!!!!!
 void LCD_HT1621_wr_9bit(u8 first_bit,u8  dat){ 	
   	if(first_bit==1){
     		CLR_WR();	//wr=0;
@@ -345,16 +345,16 @@ void LCD_HT1621_wr_9bit(u8 first_bit,u8  dat){
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//!!!!!!!ÂúÆÁ!!!!!!!!!!!!!
+//!!!!!!!æ»¡å±!!!!!!!!!!!!!
 void LCD_HT1621_full(u8 dat){
   	u8 i;
   	CLR_CS();	//cs=0;
   	//delay(DELAY_TIME);
   	LCD_HT1621_wr_nbit(3,0xa0);//WRITE DATA 101
-  	LCD_HT1621_wr_nbit(6,0x00);//SEGµØÖ·,¸ßÁùÎ»ÓĞĞ§   101Ä£Ê½ÏÂSEG×Ô¶¯¼ÓÒ»
+  	LCD_HT1621_wr_nbit(6,0x00);//SEGåœ°å€,é«˜å…­ä½æœ‰æ•ˆ   101æ¨¡å¼ä¸‹SEGè‡ªåŠ¨åŠ ä¸€
   	for(i=0;i<32;i++)
   	{
-    		LCD_HT1621_wr_nbit(4,dat);//COMµØÖ·£¬¸ßËÄÎ»ÓĞĞ§£¬ACC.7-ACC.4¶ÔÓ¦D0-D3
+    		LCD_HT1621_wr_nbit(4,dat);//COMåœ°å€ï¼Œé«˜å››ä½æœ‰æ•ˆï¼ŒACC.7-ACC.4å¯¹åº”D0-D3
   	}
   	SET_CS();	//cs=1;
 }
@@ -376,20 +376,20 @@ void LCD_HT1621_INIT (void){
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//!!!!!!!!!Ğ´Êı¾İ!!!!!!!!
+//!!!!!!!!!å†™æ•°æ®!!!!!!!!
 void LCD_wr_dat(u8 add1, u8 add2,u8 dat1){
-//ÏÔÊ¾Êı¾İ£¬addrÎªÏÔÊ¾Êı¾İµÄµØÖ·£¬datÎªÏÔÊ¾Êı¾İ¶ÔÓ¦µÄ¹ØÏµÈçÏÂ:
-//addr: ÉÏÅÅ1¡¢2¡¢3¡¢4ÏÂÅÅ5¡¢6¡¢7¡¢8¡¢9
-//dat:null¡¢0¡¢1¡¢2¡¢3¡¢4¡¢5¡¢6¡¢7¡¢8¡¢9¡¢A¡¢b¡¢C¡¢d¡¢E¡¢F¡¢H¡¢o¡¢L¡¢S
+//æ˜¾ç¤ºæ•°æ®ï¼Œaddrä¸ºæ˜¾ç¤ºæ•°æ®çš„åœ°å€ï¼Œdatä¸ºæ˜¾ç¤ºæ•°æ®å¯¹åº”çš„å…³ç³»å¦‚ä¸‹:
+//addr: ä¸Šæ’1ã€2ã€3ã€4ä¸‹æ’5ã€6ã€7ã€8ã€9
+//dat:nullã€0ã€1ã€2ã€3ã€4ã€5ã€6ã€7ã€8ã€9ã€Aã€bã€Cã€dã€Eã€Fã€Hã€oã€Lã€S
   	CLR_CS();	//cs=0;
   	LCD_HT1621_wr_nbit(3,0xa0);//WRITE DATA 101
-  	LCD_HT1621_wr_nbit(6,add1);//SEGµØÖ·,¸ßÁùÎ»ÓĞĞ§   101Ä£Ê½ÏÂSEG×Ô¶¯¼ÓÒ»
+  	LCD_HT1621_wr_nbit(6,add1);//SEGåœ°å€,é«˜å…­ä½æœ‰æ•ˆ   101æ¨¡å¼ä¸‹SEGè‡ªåŠ¨åŠ ä¸€
   	LCD_HT1621_wr_nbit(4,dat1); 
   	SET_CS();	//cs=1;
   	
   	CLR_CS();	//cs=0;
   	LCD_HT1621_wr_nbit(3,0xa0);//WRITE DATA 101
-  	LCD_HT1621_wr_nbit(6,add2);//SEGµØÖ·,¸ßÁùÎ»ÓĞĞ§   101Ä£Ê½ÏÂSEG×Ô¶¯¼ÓÒ»
+  	LCD_HT1621_wr_nbit(6,add2);//SEGåœ°å€,é«˜å…­ä½æœ‰æ•ˆ   101æ¨¡å¼ä¸‹SEGè‡ªåŠ¨åŠ ä¸€
   	LCD_HT1621_wr_nbit(4,(dat1<<4)); 
   	SET_CS();	//cs=1;
 }
@@ -397,14 +397,14 @@ void LCD_wr_dat(u8 add1, u8 add2,u8 dat1){
 
 
 //---------------------------------------------------------------------------
-//!!!!!!!!!Ğ´Êı¾İ!!!!!!!!
+//!!!!!!!!!å†™æ•°æ®!!!!!!!!
 void LCD_wr_BIT4(u8 add1,u8 dat1){
-//ÏÔÊ¾Êı¾İ£¬addrÎªÏÔÊ¾Êı¾İµÄµØÖ·£¬datÎªÏÔÊ¾Êı¾İ¶ÔÓ¦µÄ¹ØÏµÈçÏÂ:
-//addr: ÉÏÅÅ1¡¢2¡¢3¡¢4ÏÂÅÅ5¡¢6¡¢7¡¢8¡¢9
-//dat:null¡¢0¡¢1¡¢2¡¢3¡¢4¡¢5¡¢6¡¢7¡¢8¡¢9¡¢A¡¢b¡¢C¡¢d¡¢E¡¢F¡¢H¡¢o¡¢L¡¢S
+//æ˜¾ç¤ºæ•°æ®ï¼Œaddrä¸ºæ˜¾ç¤ºæ•°æ®çš„åœ°å€ï¼Œdatä¸ºæ˜¾ç¤ºæ•°æ®å¯¹åº”çš„å…³ç³»å¦‚ä¸‹:
+//addr: ä¸Šæ’1ã€2ã€3ã€4ä¸‹æ’5ã€6ã€7ã€8ã€9
+//dat:nullã€0ã€1ã€2ã€3ã€4ã€5ã€6ã€7ã€8ã€9ã€Aã€bã€Cã€dã€Eã€Fã€Hã€oã€Lã€S
   	CLR_CS();	//cs=0;
   	LCD_HT1621_wr_nbit(3,0xa0);//WRITE DATA 101
-  	LCD_HT1621_wr_nbit(6,add1);//SEGµØÖ·,¸ßÁùÎ»ÓĞĞ§   101Ä£Ê½ÏÂSEG×Ô¶¯¼ÓÒ»
+  	LCD_HT1621_wr_nbit(6,add1);//SEGåœ°å€,é«˜å…­ä½æœ‰æ•ˆ   101æ¨¡å¼ä¸‹SEGè‡ªåŠ¨åŠ ä¸€
   	LCD_HT1621_wr_nbit(4,dat1); 
   	SET_CS();	//cs=1;
 }
@@ -414,37 +414,37 @@ void LCD_wr_BIT4(u8 add1,u8 dat1){
 void LCD_DRIVER_Init(void)
 {
 	LCD_Init_GPIO();
-	//¹Ü½Å³õÊ¼»¯
+	//ç®¡è„šåˆå§‹åŒ–
 	Delay_ms(300);
 	LCD_HT1621_INIT();
-	//ÃüÁî³õÊ¼»¯
+	//å‘½ä»¤åˆå§‹åŒ–
 	LCD_HT1621_full(0x00);
-	//ÇåÆÁ
+	//æ¸…å±
 }
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//ÒÔÏÂÊÇDAC³õÊ¼»¯
-//DACÍ¨µÀ1Êä³ö³õÊ¼»¯
+//ä»¥ä¸‹æ˜¯DACåˆå§‹åŒ–
+//DACé€šé“1è¾“å‡ºåˆå§‹åŒ–
 void Dac1_Init(void){
 	 GPIO_InitTypeDef GPIO_InitStructure;
 	 DAC_InitTypeDef DAC_InitType;
 	 DAC_StructInit(&DAC_InitType);
-	 RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE );	  //Ê¹ÄÜDACÍ¨µÀÊ±ÖÓ
+	 RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE );	  //ä½¿èƒ½DACé€šé“æ—¶é’Ÿ
 	 
-	 GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;				   // ¶Ë¿ÚÅäÖÃ
-	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;			//Ä£ÄâÊäÈë
+	 GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;				   // ç«¯å£é…ç½®
+	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;			//æ¨¡æ‹Ÿè¾“å…¥
 	 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	 GPIO_Init(GPIOA, &GPIO_InitStructure);
-	 GPIO_SetBits(GPIOA,GPIO_Pin_4)    ;//PA.4 Êä³ö¸ß
+	 GPIO_SetBits(GPIOA,GPIO_Pin_4)    ;//PA.4 è¾“å‡ºé«˜
 	 
-	 DAC_InitType.DAC_Trigger=DAC_Trigger_None;    //²»Ê¹ÓÃ´¥·¢¹¦ÄÜ TEN1=0
-	 DAC_InitType.DAC_WaveGeneration=DAC_WaveGeneration_None;//²»Ê¹ÓÃ²¨ĞÎ·¢Éú
-	 DAC_InitType.DAC_OutputBuffer=DAC_OutputBuffer_Enable;    //DAC1Êä³ö»º´æ¹Ø±Õ BOFF1=1
-	 DAC_Init(DAC_Channel_1,&DAC_InitType); 	//³õÊ¼»¯DACÍ¨µÀ1
+	 DAC_InitType.DAC_Trigger=DAC_Trigger_None;    //ä¸ä½¿ç”¨è§¦å‘åŠŸèƒ½ TEN1=0
+	 DAC_InitType.DAC_WaveGeneration=DAC_WaveGeneration_None;//ä¸ä½¿ç”¨æ³¢å½¢å‘ç”Ÿ
+	 DAC_InitType.DAC_OutputBuffer=DAC_OutputBuffer_Enable;    //DAC1è¾“å‡ºç¼“å­˜å…³é—­ BOFF1=1
+	 DAC_Init(DAC_Channel_1,&DAC_InitType); 	//åˆå§‹åŒ–DACé€šé“1
 	 
-	 DAC_Cmd(DAC_Channel_1, ENABLE); //Ê¹ÄÜDAC1
-	 DAC_SetChannel1Data(DAC_Align_12b_R, JCXI_420ma4); //12Î»ÓÒ¶ÔÆëÊı¾İ¸ñÊ½ÉèÖÃDACÖµ
+	 DAC_Cmd(DAC_Channel_1, ENABLE); //ä½¿èƒ½DAC1
+	 DAC_SetChannel1Data(DAC_Align_12b_R, JCXI_420ma4); //12ä½å³å¯¹é½æ•°æ®æ ¼å¼è®¾ç½®DACå€¼
 }
 //---------------------------------------------------------------------------
  
@@ -456,12 +456,12 @@ void DAC_stm_Init(void){
 
 //---------------------------------------------------------------------------
 void DIANLIU_420MA_SET(u16 vol){
-    DAC_SetChannel1Data(DAC_Align_12b_R,vol);//12Î»ÓÒ¶ÔÆëÊı¾İ¸ñÊ½ÉèÖÃDACÖµ
+    DAC_SetChannel1Data(DAC_Align_12b_R,vol);//12ä½å³å¯¹é½æ•°æ®æ ¼å¼è®¾ç½®DACå€¼
 } 
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//ÒÔÏÂÊÇADC³õÊ¼»¯
+//ä»¥ä¸‹æ˜¯ADCåˆå§‹åŒ–
 //------------------------------------------------------------------
 void ADC_NVIC_Configuration(void)
 {
@@ -493,10 +493,10 @@ void ADC1_Init(void){
 
  	/* DMA1 channel1 configuration ----------------------------------------------*/
   	DMA_DeInit(DMA1_Channel1);
-  	DMA_InitStructure.DMA_PeripheralBaseAddr = DR_ADDRESS;//ÍâÉèµØÖ·
-  	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32)(&(STM_ADC_DATA[0]));//ÄÚ´æµØÖ·
+  	DMA_InitStructure.DMA_PeripheralBaseAddr = DR_ADDRESS;//å¤–è®¾åœ°å€
+  	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32)(&(STM_ADC_DATA[0]));//å†…å­˜åœ°å€
   	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-  	DMA_InitStructure.DMA_BufferSize = ADC_VALUE_LENGTH; // 4ms ²ÉÑùÒ»¸öÊı¾İ
+  	DMA_InitStructure.DMA_BufferSize = ADC_VALUE_LENGTH; // 4ms é‡‡æ ·ä¸€ä¸ªæ•°æ®
   	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
   	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
   	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
@@ -511,29 +511,29 @@ void ADC1_Init(void){
  	/* ADC1 configuration ------------------------------------------------------*/
 	//APB2 = 4.5Mhz
 	ADC_TempSensorVrefintCmd(ENABLE);
-	//´ò¿ªÎÂ¶È´«¸ĞÆ÷
+	//æ‰“å¼€æ¸©åº¦ä¼ æ„Ÿå™¨
 	RCC_ADCCLKConfig(RCC_PCLK2_Div8); //APB2 / 8 = 562.5khz
   	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
-	//¶ÀÁ¢¹¤×÷Ä£Ê½
+	//ç‹¬ç«‹å·¥ä½œæ¨¡å¼
   	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
-	//É¨Ãè·½Ê½
+	//æ‰«ææ–¹å¼
   	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
-	//Á¬Ğø×ª»»
-  	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;//Íâ²¿´¥·¢½ûÖ¹
-  	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;//Êı¾İÓÒ¶ÔÆë
-  	ADC_InitStructure.ADC_NbrOfChannel = ADC_USED_CHANNEL;//ÓÃÓÚ×ª»»µÄÍ¨µÀÊı
+	//è¿ç»­è½¬æ¢
+  	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;//å¤–éƒ¨è§¦å‘ç¦æ­¢
+  	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;//æ•°æ®å³å¯¹é½
+  	ADC_InitStructure.ADC_NbrOfChannel = ADC_USED_CHANNEL;//ç”¨äºè½¬æ¢çš„é€šé“æ•°
   	ADC_Init(ADC1,&ADC_InitStructure);
 
-  	/* ADC1 regular channels configuration [¹æÔòÄ£Ê½Í¨µÀÅäÖÃ]*/ 
+  	/* ADC1 regular channels configuration [è§„åˆ™æ¨¡å¼é€šé“é…ç½®]*/ 
   	ADC_RegularChannelConfig(ADC1, ADC_Channel_10 , 1, ADC_SampleTime_239Cycles5); // 448us
   	ADC_RegularChannelConfig(ADC1, ADC_Channel_3 , 2, ADC_SampleTime_239Cycles5);// 448us
   	ADC_RegularChannelConfig(ADC1, ADC_Channel_Vrefint, 3, ADC_SampleTime_239Cycles5);// 448us
   	ADC_RegularChannelConfig(ADC1, ADC_Channel_TempSensor, 4, ADC_SampleTime_239Cycles5);// 448us
 	// 3.58ms
-  	/* Enable ADC1 DMA [Ê¹ÄÜADC1 DMA]*/
+  	/* Enable ADC1 DMA [ä½¿èƒ½ADC1 DMA]*/
   	ADC_DMACmd(ADC1, ENABLE);
   
-  	/* Enable ADC1 [Ê¹ÄÜADC1]*/
+  	/* Enable ADC1 [ä½¿èƒ½ADC1]*/
   	ADC_Cmd(ADC1, ENABLE); 
 
 
@@ -565,7 +565,7 @@ void ADC_START_SAMPLE(void){
 //------------------------------------------------------------------
 
 //------------------------------------------------------------------
-//ÒÔÏÂÊÇ¼ÌµçÆ÷³õÊ¼»¯
+//ä»¥ä¸‹æ˜¯ç»§ç”µå™¨åˆå§‹åŒ–
 //---------------------------------------------------------------------------
 void JIDIANQI_INIT(void){
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -580,7 +580,7 @@ void JIDIANQI_INIT(void){
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//ÒÔÏÂÊÇFLASH²¿·Ö
+//ä»¥ä¸‹æ˜¯FLASHéƒ¨åˆ†
 //------------------------------------------------------------
 u32  Flash_Read_WORD(u32 flash_address){
 	return *(u32 *)flash_address;
@@ -589,32 +589,32 @@ u32  Flash_Read_WORD(u32 flash_address){
 
 //------------------------------------------------------------------
 void FLASH_PARAMETER_TOREAD(void){
-	JCXI_485_ID = FLASH_PARAMETER_GAS[0]; //485Ê¹ÓÃIDºÅÂë	
-	JCXI_420ma4 = FLASH_PARAMETER_GAS[1];//4maÖµ
-	JCXI_420ma20 = FLASH_PARAMETER_GAS[2];//20maÖµ
-	JCXI_jidianqigenshuiDIBAO = FLASH_PARAMETER_GAS[3];//µÍ±¨¼ÌµçÆ÷Ë²¼äÊä³ö0£¬³¤Êä³ö1
-	JCXI_jidianqigenshuigaobao = FLASH_PARAMETER_GAS[4];//µÍ±¨¼ÌµçÆ÷Ë²¼äÊä³ö0£¬³¤Êä³ö1
+	JCXI_485_ID = FLASH_PARAMETER_GAS[0]; //485ä½¿ç”¨IDå·ç 	
+	JCXI_420ma4 = FLASH_PARAMETER_GAS[1];//4maå€¼
+	JCXI_420ma20 = FLASH_PARAMETER_GAS[2];//20maå€¼
+	JCXI_jidianqigenshuiDIBAO = FLASH_PARAMETER_GAS[3];//ä½æŠ¥ç»§ç”µå™¨ç¬é—´è¾“å‡º0ï¼Œé•¿è¾“å‡º1
+	JCXI_jidianqigenshuigaobao = FLASH_PARAMETER_GAS[4];//ä½æŠ¥ç»§ç”µå™¨ç¬é—´è¾“å‡º0ï¼Œé•¿è¾“å‡º1
 }
 //------------------------------------------------------------------
 
 //------------------------------------------------------------------
 void FLASH_PARAMETER_TOWRITE(void){
-	// ½«ĞèÒª±£´æµÄĞÅÏ¢ÊÕ¼¯
-		FLASH_PARAMETER_GAS[0] = JCXI_485_ID; //485Ê¹ÓÃIDºÅÂë	
-		FLASH_PARAMETER_GAS[1] = JCXI_420ma4;//4maÖµ
-		FLASH_PARAMETER_GAS[2] = JCXI_420ma20;//20maÖµ
-		FLASH_PARAMETER_GAS[3] = JCXI_jidianqigenshuiDIBAO;//µÍ±¨¼ÌµçÆ÷Ë²¼äÊä³ö0£¬³¤Êä³ö1
-		FLASH_PARAMETER_GAS[4] = JCXI_jidianqigenshuigaobao;//µÍ±¨¼ÌµçÆ÷Ë²¼äÊä³ö0£¬³¤Êä³ö1
+	// å°†éœ€è¦ä¿å­˜çš„ä¿¡æ¯æ”¶é›†
+		FLASH_PARAMETER_GAS[0] = JCXI_485_ID; //485ä½¿ç”¨IDå·ç 	
+		FLASH_PARAMETER_GAS[1] = JCXI_420ma4;//4maå€¼
+		FLASH_PARAMETER_GAS[2] = JCXI_420ma20;//20maå€¼
+		FLASH_PARAMETER_GAS[3] = JCXI_jidianqigenshuiDIBAO;//ä½æŠ¥ç»§ç”µå™¨ç¬é—´è¾“å‡º0ï¼Œé•¿è¾“å‡º1
+		FLASH_PARAMETER_GAS[4] = JCXI_jidianqigenshuigaobao;//ä½æŠ¥ç»§ç”µå™¨ç¬é—´è¾“å‡º0ï¼Œé•¿è¾“å‡º1
 }
 //------------------------------------------------------------------
 
 //------------------------------------------------------------------
 void FLASH_CLEAR_GAS_PARAMETER(void){
-		JCXI_485_ID = 0; //485Ê¹ÓÃIDºÅÂë	
-		JCXI_420ma4 = 490;//4maÖµ
-		JCXI_420ma20 = 2500;//20maÖµ
-		JCXI_jidianqigenshuiDIBAO = 1;//µÍ±¨¼ÌµçÆ÷Ë²¼äÊä³ö0£¬³¤Êä³ö1
-		JCXI_jidianqigenshuigaobao = 1;//µÍ±¨¼ÌµçÆ÷Ë²¼äÊä³ö0£¬³¤Êä³ö1
+		JCXI_485_ID = 0; //485ä½¿ç”¨IDå·ç 	
+		JCXI_420ma4 = 490;//4maå€¼
+		JCXI_420ma20 = 2500;//20maå€¼
+		JCXI_jidianqigenshuiDIBAO = 1;//ä½æŠ¥ç»§ç”µå™¨ç¬é—´è¾“å‡º0ï¼Œé•¿è¾“å‡º1
+		JCXI_jidianqigenshuigaobao = 1;//ä½æŠ¥ç»§ç”µå™¨ç¬é—´è¾“å‡º0ï¼Œé•¿è¾“å‡º1
 }
 //------------------------------------------------------------------
 
@@ -624,7 +624,7 @@ void  Flash_WRITE_GAS(u32 flash_address,u32 *addr){
 	uint8 i;
 	FLASH_Unlock();	//FLASH?a??
     	/* Clear All pending flags */
-    	FLASH_ClearFlag(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);//??¡À¨º????
+    	FLASH_ClearFlag(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);//??Â±Ãª????
 	Status_temp = FLASH_ErasePage(flash_address); 
 	while(Status_temp != FLASH_COMPLETE) {
 		Status_temp = FLASH_WaitForLastOperation(1000);
@@ -700,5 +700,5 @@ void Load_Init(void){
 //---------------------------------------------------------------------------
 
 /********************************************************************
-					LOAD.cµÄ³ÌĞòµ½´Ë½áÊø¡£
+					LOAD.cçš„ç¨‹åºåˆ°æ­¤ç»“æŸã€‚
 *********************************************************************/

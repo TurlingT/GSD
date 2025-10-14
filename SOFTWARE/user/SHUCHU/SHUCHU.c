@@ -3,8 +3,8 @@
 * SHUCHU.c
 *
 *
-* ÃèÊö
-* Õâ¸öÎÄ¼şÊµÏÖÖ÷³ÌĞòÏà¹Ø¹¦ÄÜº¯Êı.
+* æè¿°
+* è¿™ä¸ªæ–‡ä»¶å®ç°ä¸»ç¨‹åºç›¸å…³åŠŸèƒ½å‡½æ•°.
 *
 *
 * (c) 2007 Jiwen Su
@@ -12,10 +12,10 @@
 #include "includes.h"
 
 //------------------------------------------------------------------------------
-//Ö¸Ê¾µÆ
+//æŒ‡ç¤ºç¯
 void led_shuchu(void){
 	if(JCXI_qitileixing == 2){
-		//ÑõÆø
+		//æ°§æ°”
 		if(chuanganqizhuangtai == 1)
 		{
 			LED_ERROR_ON();
@@ -119,10 +119,10 @@ float temp1 =0;
 //-----------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//¼ÌµçÆ÷
+//ç»§ç”µå™¨
 void jidianqi_shuchu(void){
 	if(JCXI_qitileixing == 2){
-		//ÑõÆø
+		//æ°§æ°”
 		if(chuanganqizhuangtai == 2)
 		{
 			if(JCXI_jidianqigenshuiDIBAO == 0)
@@ -133,17 +133,17 @@ void jidianqi_shuchu(void){
 				}
 				else
 				{
-					//´ò¿ªµÍ±¨¼ÌµçÆ÷ 		   
+					//æ‰“å¼€ä½æŠ¥ç»§ç”µå™¨ 		   
 					JIDIANQI_ALARML_ON();
 					dibaojidianqishuchuwancheng = TRUE;
 					Delay_ms(1000);
-					//¹Ø±ÕµÍ±¨¼ÌµçÆ÷ 			   
+					//å…³é—­ä½æŠ¥ç»§ç”µå™¨ 			   
 					JIDIANQI_ALARML_OFF();
 				}
 			}
 			else
 			{
-				//´ò¿ªµÍ±¨¼ÌµçÆ÷    
+				//æ‰“å¼€ä½æŠ¥ç»§ç”µå™¨    
 				JIDIANQI_ALARML_ON();
 			}	
 			JIDIANQI_ALARMH_OFF();
@@ -158,17 +158,17 @@ void jidianqi_shuchu(void){
 				}
 				else
 				{
-					//´ò¿ª¸ß±¬¼ÌµçÆ÷    
+					//æ‰“å¼€é«˜çˆ†ç»§ç”µå™¨    
 					JIDIANQI_ALARMH_ON();
 					gaobaojidianqishuchuwancheng = TRUE;
 					Delay_ms(1000);
-					//¹Ø±Õ¸ß±¬¼ÌµçÆ÷ 		   
+					//å…³é—­é«˜çˆ†ç»§ç”µå™¨ 		   
 					JIDIANQI_ALARMH_OFF();
 				}   
 			}
 			else
 			{
-				//´ò¿ª¸ß±¬¼ÌµçÆ÷
+				//æ‰“å¼€é«˜çˆ†ç»§ç”µå™¨
 				JIDIANQI_ALARMH_ON();
 			}   
 			JIDIANQI_ALARML_OFF();
@@ -177,7 +177,7 @@ void jidianqi_shuchu(void){
 		{  
 		   dibaojidianqishuchuwancheng=FALSE;
 		   gaobaojidianqishuchuwancheng=FALSE;
-		   //¹Ø±ÕËùÓĞ¼ÌµçÆ÷
+		   //å…³é—­æ‰€æœ‰ç»§ç”µå™¨
 		   JIDIANQI_ALARML_OFF();
 		   JIDIANQI_ALARMH_OFF();
 		}
@@ -193,18 +193,18 @@ void jidianqi_shuchu(void){
 					   }
 				   else
 					   {
-						   //´ò¿ªµÍ±¨¼ÌµçÆ÷ 		   
+						   //æ‰“å¼€ä½æŠ¥ç»§ç”µå™¨ 		   
 						   JIDIANQI_ALARML_ON();
 						   dibaojidianqishuchuwancheng = TRUE;
 						   Delay_ms(1000);
-						   //¹Ø±ÕµÍ±¨¼ÌµçÆ÷ 			   
+						   //å…³é—­ä½æŠ¥ç»§ç”µå™¨ 			   
 						   JIDIANQI_ALARML_OFF();
 					   }
 					   
 			   }
 			   else
 			   {
-				   //´ò¿ªµÍ±¨¼ÌµçÆ÷    
+				   //æ‰“å¼€ä½æŠ¥ç»§ç”µå™¨    
 				   JIDIANQI_ALARML_ON();
 			   }			   
 			if(chuanganqizhuangtai == 3 )
@@ -217,18 +217,18 @@ void jidianqi_shuchu(void){
 					   }
 				   else
 					   {
-						   //´ò¿ª¸ß±¬¼ÌµçÆ÷    
+						   //æ‰“å¼€é«˜çˆ†ç»§ç”µå™¨    
 						   JIDIANQI_ALARMH_ON();
 						   gaobaojidianqishuchuwancheng = TRUE;
 						   Delay_ms(1000);
-						   //¹Ø±Õ¸ß±¬¼ÌµçÆ÷ 		   
+						   //å…³é—­é«˜çˆ†ç»§ç”µå™¨ 		   
 						   JIDIANQI_ALARMH_OFF();
 					   }
 					   
 			   }
 			   else
 			   {
-				   //´ò¿ª¸ß±¬¼ÌµçÆ÷
+				   //æ‰“å¼€é«˜çˆ†ç»§ç”µå™¨
 				   JIDIANQI_ALARMH_ON();
 			   }   
 			}
@@ -241,7 +241,7 @@ void jidianqi_shuchu(void){
 		{  
 		   dibaojidianqishuchuwancheng=FALSE;
 		   gaobaojidianqishuchuwancheng=FALSE;
-		   //¹Ø±ÕËùÓĞ¼ÌµçÆ÷
+		   //å…³é—­æ‰€æœ‰ç»§ç”µå™¨
 		   JIDIANQI_ALARML_OFF();
 		   JIDIANQI_ALARMH_OFF();
 		}
@@ -260,5 +260,5 @@ void SHUCHU_DIAOYONG(void){
 //-----------------------------------------------------------
 
 /********************************************************************
-					SHUCHU.cµÄ³ÌĞòµ½´Ë½áÊø¡£
+					SHUCHU.cçš„ç¨‹åºåˆ°æ­¤ç»“æŸã€‚
 *********************************************************************/
