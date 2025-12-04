@@ -808,70 +808,85 @@ void SPI3_IRQHandler(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
+
+
+// --- 在全局作用域定义 ---
+#define UART_RX_BUF_MAX_LEN 100 // 接收缓冲区的最大长度
+//#define UART4_RECV_LEN 15  // 固定接收长度
+
+extern uint8_t recv_cnt;
+extern  uint8_t data[UART_RX_BUF_MAX_LEN];
+
+//// 为不同报文类型定义独立的标志位
+//extern uint8_t uart4_recv_flag;
+
+// 为了将接收到的数据长度传递给主循环，我们仍然需要这个变量
+volatile uint16_t uart4_recv_len = 0;
+const uint8_t MSG_B_HEADER[] = {0x55, 0x31}; // "U1";
+const uint8_t MSG_C_HEADER[] = {0x55, 0x32}; // "U2"
 void UART4_IRQHandler(void)
 {
-	u8 receive;
+//	u8 receive;
 	if(USART_GetITStatus(UART4, USART_IT_RXNE) == SET){
 		USART_ClearITPendingBit(UART4, USART_IT_RXNE);
-	  	receive = USART_ReceiveData(UART4);    
- 		switch(jieshouweizhi){
-			case 0:
-				if(receive == 0x5a){
-					jieshou_232[0] = receive;
-					jieshouweizhi++;
-				}
-				else{
-					jieshouweizhi = 0;
-					wanchengjieshou_232 =FALSE;	
-				}
-			break;
-			case 1:
-				if(receive == 0xa5){
-					jieshou_232[1] = receive;
-					jieshouweizhi++;
-				}				
-				else{
-					jieshouweizhi = 0;
-					wanchengjieshou_232 =FALSE;	
-				}
-			break;
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-				jieshou_232[jieshouweizhi++] = receive;
-			break;
-			case 8:
-				if(receive == 0x00){					
-					jieshou_232[jieshouweizhi] = receive;
-					jieshouweizhi++;
-				}
-				else{
-					jieshouweizhi = 0;
-					wanchengjieshou_232 =FALSE;
-				}
-			break;
-			case 9:
-				if(receive == 0x01){
-					jieshou_232[jieshouweizhi] = receive;
-					jieshouweizhi=0;
-					wanchengjieshou_232 =TRUE;	
-				}
-				else{
-					jieshouweizhi = 0;
-					wanchengjieshou_232 =FALSE;	
-				}
-			break;
-			default:
-				jieshouweizhi = 0;
-				wanchengjieshou_232 =FALSE;	
-		}
+//	  	receive = USART_ReceiveData(UART4);
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
+        uint8_t recv_data = USART_ReceiveData(UART4);  // 读取数据
+        
+        if (recv_cnt < UART_RX_BUF_MAX_LEN)
+        {
+            data[recv_cnt] = recv_data;
+
+            // 判断是否接收到帧尾 (0x0D 0x0A)
+            if (recv_cnt > 0 && data[recv_cnt] == 0x0A && data[recv_cnt - 1] == 0x0D)
+            {
+                uint16_t current_len = recv_cnt + 1;
+                uart4_recv_len = current_len; // 保存数据长度给主循环
+
+                // 在这里直接进行报文区分
+                // 报文A: 长度15, 帧头 "0." (0x55 0x32)
+                if (current_len == 13 && data[0] == MSG_C_HEADER[0] && data[1] == MSG_C_HEADER[1])
+                {
+//                    uart4_recv_flag = 2; // 接收标定
+//                    wanchengjieshou_232 = TRUE;
+                    xianshimoshi =3;
+                }
+                // 报文B: 长度13, 帧头 "U1" (0x55 0x31)
+                else if (current_len == 13 && data[0] == MSG_B_HEADER[0] && data[1] == MSG_B_HEADER[1])
+                {
+//                    uart4_recv_flag = 1; // 接收调零
+//                    wanchengjieshou_232 = TRUE;
+                    xianshimoshi =3;
+//                    LCD_OK();
+//                    Delay_ms(1000);
+                }
+                else if(current_len <= 10 && current_len >= 8)
+                {
+//                uart4_recv_flag = 0; // 接收浓度
+                    wanchengjieshou_232 = TRUE;
+                }
+                else{
+                    wanchengjieshou_232 = FALSE;
+                }
+                
+                recv_cnt = 0; // 重置计数器，为下一帧做准备
+            }
+            else
+            {
+                recv_cnt++; // 继续接收
+            }
+        }
+        else
+        {
+            // 缓冲区溢出，丢弃当前数据，从头开始
+            recv_cnt = 0;
+        }
+            
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++  
 	}
 	else if(USART_GetITStatus(UART4, USART_IT_TXE) == SET){
 		USART_ClearITPendingBit(UART4, USART_IT_TXE);
-		if(fasongweizhi < 10){
+		if(fasongweizhi < 13){
 			USART_SendData(UART4, fasong_232[fasongweizhi++]);
 		}
 		else{
@@ -880,7 +895,7 @@ void UART4_IRQHandler(void)
 		}
 	}
     	
-	if(USART_GetFlagStatus(UART4,USART_FLAG_ORE)==SET)
+	if(USART_GetFlagStatus(UART4,USART_FLAG_ORE)==SET)//溢出
 	{
 		USART_ClearFlag(UART4,USART_FLAG_ORE);   
 		USART_ReceiveData(UART4);               

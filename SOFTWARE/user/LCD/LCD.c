@@ -197,16 +197,16 @@ void LCD_shurumoshi(void){
 	LCD_wr_dat(baweima_1_3_1,baweima_1_3_2,yipaishuzi[temp3]);
 	LCD_wr_dat(baweima_1_4_1,baweima_1_4_2,yipaishuzi[temp4]);
 	
-	if(jiaozhunbuzhou >0)
-		{
-				
-				LCD_wr_dat(baweima_2_1_1,baweima_2_1_2,erpaishuzi[shuruzu[0]]);
-				LCD_wr_dat(baweima_2_2_1,baweima_2_2_2,erpaishuzi[shuruzu[1]]);
-				LCD_wr_dat(baweima_2_3_1,baweima_2_3_2,erpaishuzi[shuruzu[2]]);
-				LCD_wr_dat(baweima_2_4_1,baweima_2_4_2,erpaishuzi[shuruzu[3]]);
-				LCD_wr_dat(baweima_2_5_1,baweima_2_5_2,erpaishuzi[shuruzu[4]]);		
-		}
-	else{
+//	if(jiaozhunbuzhou >0)
+//		{
+//				
+//				LCD_wr_dat(baweima_2_1_1,baweima_2_1_2,erpaishuzi[shuruzu[0]]);
+//				LCD_wr_dat(baweima_2_2_1,baweima_2_2_2,erpaishuzi[shuruzu[1]]);
+//				LCD_wr_dat(baweima_2_3_1,baweima_2_3_2,erpaishuzi[shuruzu[2]]);
+//				LCD_wr_dat(baweima_2_4_1,baweima_2_4_2,erpaishuzi[shuruzu[3]]);
+//				LCD_wr_dat(baweima_2_5_1,baweima_2_5_2,erpaishuzi[shuruzu[4]]);		
+//		}
+//	else{
 			switch(shuruweizhi)
 				{
 					case 0:
@@ -300,7 +300,7 @@ void LCD_shurumoshi(void){
 							}
 					break;
 				}
-		}
+//		}
 
  }
 //------------------------------------------------------------------------------
@@ -362,12 +362,14 @@ void LCD_ERR(void){
  }
 //-----------------------------------------------------------------------------
 
+float temp6; 
+extern int result;
 //---------------------------------------------------------------------------
 //显示气体浓度
 void lcd_shuzhixianshi(void)
 {
 	u8 temp1,temp2,temp3,temp4,temp5;
-	float temp6;
+
 	temp6 = qitinongdu;
 		if(temp6>JCXI_zuidaliangcheng){
 			temp6=JCXI_zuidaliangcheng;

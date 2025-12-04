@@ -594,6 +594,10 @@ void FLASH_PARAMETER_TOREAD(void){
 	JCXI_420ma20 = FLASH_PARAMETER_GAS[2];//20ma值
 	JCXI_jidianqigenshuiDIBAO = FLASH_PARAMETER_GAS[3];//低报继电器瞬间输出0，长输出1
 	JCXI_jidianqigenshuigaobao = FLASH_PARAMETER_GAS[4];//低报继电器瞬间输出0，长输出1
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
+    JCXI_dibaojing = FLASH_PARAMETER_GAS[5];
+    JCXI_gaobaojing = FLASH_PARAMETER_GAS[6];
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++
 }
 //------------------------------------------------------------------
 
@@ -605,6 +609,10 @@ void FLASH_PARAMETER_TOWRITE(void){
 		FLASH_PARAMETER_GAS[2] = JCXI_420ma20;//20ma值
 		FLASH_PARAMETER_GAS[3] = JCXI_jidianqigenshuiDIBAO;//低报继电器瞬间输出0，长输出1
 		FLASH_PARAMETER_GAS[4] = JCXI_jidianqigenshuigaobao;//低报继电器瞬间输出0，长输出1
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
+        FLASH_PARAMETER_GAS[5] = JCXI_dibaojing;
+        FLASH_PARAMETER_GAS[6] = JCXI_gaobaojing;
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++
 }
 //------------------------------------------------------------------
 
@@ -615,6 +623,10 @@ void FLASH_CLEAR_GAS_PARAMETER(void){
 		JCXI_420ma20 = 2500;//20ma值
 		JCXI_jidianqigenshuiDIBAO = 1;//低报继电器瞬间输出0，长输出1
 		JCXI_jidianqigenshuigaobao = 1;//低报继电器瞬间输出0，长输出1
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
+        JCXI_dibaojing = 25;//低报警25
+        JCXI_gaobaojing = 50;//高报警50
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++
 }
 //------------------------------------------------------------------
 
@@ -645,9 +657,10 @@ void  Flash_WRITE_GAS(u32 flash_address,u32 *addr){
 void FLASH_WRITE_PARAMETER(void){
 	u32 *p_addr = (u32 *)(FLASH_PARAMETER_GAS);
 	FLASH_PARAMETER_TOWRITE();
-	__set_FAULTMASK(1); 
+	__set_FAULTMASK(1);             //立即关闭（屏蔽）几乎所有的中断和系统异常 
 	Flash_WRITE_GAS(FLASH_SENSOR_PARAMETRER,p_addr);
-	__set_FAULTMASK(0); 
+	__set_FAULTMASK(0);             //立即恢复（开启）所有之前被屏蔽的中断和异常。
+    //三行代码组成了一个典型的**“临界区（Critical Section）”**保护模式，专门用于保护像Flash擦写这样不能被中断打扰的关键操作
 }
 //------------------------------------------------------------------
 
@@ -672,8 +685,8 @@ void  Flash_Read_GAS(u32 flash_address,u32 *addr){
 
 //------------------------------------------------------------------
 void FLASH_READ_PARAMETER(void){
-	u32 *p_addr = (u32 *)(FLASH_PARAMETER_GAS);
- 	Flash_Read_GAS(FLASH_SENSOR_PARAMETRER,p_addr);
+	u32 *p_addr = (u32 *)(FLASH_PARAMETER_GAS);              //取FLASH_PARAMETER_GAS数组的首地址
+ 	Flash_Read_GAS(FLASH_SENSOR_PARAMETRER,p_addr);          //(flash)
 
 	FLASH_PARAMETER_TOREAD();
 }
@@ -693,8 +706,10 @@ void Load_Init(void){
 	ADC_START_SAMPLE();
 	JIDIANQI_INIT();
 	USART1_Init(9600);
-	UART4_Init(115200);
-
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++    
+//	UART4_Init(115200);
+    UART4_Init(9600);
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++    
 	JIARE_INIT();
 }
 //---------------------------------------------------------------------------

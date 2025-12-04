@@ -31,7 +31,7 @@ extern bool wanchengjieshou_485;
 extern u8 JCXI_485_ID;
 
 extern u8 jieshou_232[10];
-extern u8 fasong_232[10];
+extern u8 fasong_232[13];
 extern u8 jieshouweizhi;
 extern u8 fasongweizhi;
 extern bool wanchengjieshou_232;
@@ -47,6 +47,8 @@ extern u8	jcxibuzhou;
 extern u8 jiaozhunbuzhou;
 extern u32 jiaozhunxianshi;
 extern u16 chuanganqijieshou;
+
+extern u8 uart4_recv_flag;
 
 extern bool LCD_SHOW_YON;
 extern bool upxianshimoshi;

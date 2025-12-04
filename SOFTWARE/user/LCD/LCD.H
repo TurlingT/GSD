@@ -7,6 +7,7 @@ void LCD_chushihua(u8 temp);
 void LCD_shuchu(void);
 void LCD_shurumoshi(void);
 void LCD_LOADERR(void);
-
+void lcd_shuzhixianshi(void);
+void LCD_OK(void);
 
 #endif

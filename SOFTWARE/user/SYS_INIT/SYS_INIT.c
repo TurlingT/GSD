@@ -42,7 +42,7 @@ u8 JCXI_485_ID = 0; //modbus ID 需要保存在FLASH里
 //---------------------------------------------------------------------------
 //传感器使用
 u8 jieshou_232[10];//传感器232使用
-u8 fasong_232[10];//传感器232使用
+u8 fasong_232[13];//传感器232使用
 u8 jieshouweizhi =0;//传感器232使用
 u8 fasongweizhi =0;//传感器232使用
 bool wanchengjieshou_232 =FALSE;//传感器232使用
@@ -50,14 +50,16 @@ float qitinongdu =0;//气体浓度
 u8 chuanganqizhuangtai =0;//0代表正常，1代表故障，2代表低报，3代表高爆.4高浓度淹没
 u16 JCXI_zuidaliangcheng = 255;//最大量程
 u16 JCXI_zuixiaoliangcheng = 255;//最小量程
-u16 JCXI_gaobaojing= 255;//高报警值
-u16 JCXI_dibaojing= 255;//低报警
+u16 JCXI_gaobaojing= 255;//高报警50
+u16 JCXI_dibaojing= 255;//低报警25
 u8	JCXI_qitileixing= 255;//气体类型
 u8	JCXI_qitidanwei= 255;//气体单位
 u8	jcxibuzhou =0;//0最大量程，1最小量程，2高报警，3低报警，4气体类型，5气体单位
 u8 jiaozhunbuzhou = 0;//0代表发送校准值 1代表接收显示值 2代表确认
 u32 jiaozhunxianshi =0;//校准显示使用
 u16 chuanganqijieshou =0;//判断传感器故障使用
+
+u8 uart4_recv_flag = 0;
 
 //---------------------------------------------------------------------------
 
@@ -97,7 +99,6 @@ bool dibaojidianqishuchuwancheng = FALSE;//低报继电器是否输出完成，f
 bool gaobaojidianqishuchuwancheng =FALSE;//高爆继电器是否输出完成，false未完成
 
 //---------------------------------------------------------------------------
-
 
 
 //----------------------------------------------------------------------------

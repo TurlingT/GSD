@@ -12,12 +12,16 @@
 #include "includes.h"
 
 //-------------------------------------------------------------
+//KYE_1     √短按
+//KEY_2     ×短按
+//KEY_3     √长按（设置）
+//KEY_4     ×长按（取消）
 void KEY_MAIN_FUNC(void){
 	u16 temp2;
 	switch(KEY_CHECK()){
 		//按键检测
-		case KEY_1:
-			if(xianshimoshi == 1)
+		case KEY_1:                               //KYE_1   √短按-减
+			if(xianshimoshi == 1)                 //显示模式：设置菜单
 			{
 			  if(caidanweizhi <= zuixiaocaidanshu)
 				{
@@ -28,10 +32,10 @@ void KEY_MAIN_FUNC(void){
 			
 				}
 			}
-			if(xianshimoshi == 2)
+			if(xianshimoshi == 2)                          //显示模式：输入模式
 			{
-			   if(jiaozhunbuzhou ==2){}
-			   else{
+//			   if(jiaozhunbuzhou ==2){}                    //校准步骤：确认
+//			   else{                                       //校准步骤：发送校准值，接收显示值
 				   if(shuruzu[shuruweizhi] >= 9)
 					{
 						shuruzu[shuruweizhi] = 0;
@@ -44,11 +48,11 @@ void KEY_MAIN_FUNC(void){
 						temp2 = shuruzu[0]*10000+ shuruzu[1]*1000+ shuruzu[2]*100+ shuruzu[3]*10+ shuruzu[4];	
 						DIANLIU_420MA_SET(temp2);
 					}
-				}
+//				}
 			}
 		break;
-		case KEY_2:
-			if(xianshimoshi == 1)
+		case KEY_2:                                 //KEY_2 ×短按-加
+			if(xianshimoshi == 1)                   //显示模式：设置菜单
 			{
 			  if(caidanweizhi >= zuidacaidanshu)
 				{
@@ -59,10 +63,13 @@ void KEY_MAIN_FUNC(void){
 			
 				}
 			}	
-			if(xianshimoshi == 2)
+			if(xianshimoshi == 2)                    //显示模式：输入模式
 			{
-			   if(jiaozhunbuzhou ==2){}
-			   else{
+                
+//			   if(jiaozhunbuzhou ==2){               //校准步骤：确认
+//               
+//               }              
+//               else{                                 //校准步骤：发送校准值，接收显示值
 				   if(shuruweizhi <= 0)
 					{
 						shuruweizhi = 4;
@@ -70,42 +77,40 @@ void KEY_MAIN_FUNC(void){
 				  else{
 					  shuruweizhi--;
 					}
-				}
+//				}
 			}
 		break;
-		case KEY_3:
+		case KEY_3:                             //KEY_3 √长按（设置，确定）
 			switch(xianshimoshi)
 				{
-				   case 1:
+                case 1:                      //设置菜单(key3确定)
 					 if((caidanweizhi ==4)||(caidanweizhi ==5)||(caidanweizhi ==6)||(caidanweizhi ==8)||(caidanweizhi ==9)||(caidanweizhi ==10)){
 						 Shezhi_DY();
 					 }
 					 else{
-					 	if(caidanweizhi == 7){
+					 	if(caidanweizhi == 7){      //s-07设置ID
 							shuruzu[0] = 0;
 							shuruzu[1] = 0;
 							shuruzu[2] = JCXI_485_ID/100;
 							shuruzu[3] = (JCXI_485_ID%100)/10;
 							shuruzu[4] = JCXI_485_ID%10;
 					 	}
-						//设置ID
 						xianshimoshi = 2;
 					 }
-					break;
-				   case 2:
+					break;                     
+				   case 2:                     //输入模式
 						Shezhi_DY();
 					break;
-					case 0:
-						//设置按键
-							xianshimoshi = 1;
-							caidanweizhi = 1;
+                   case 0:                          //显示模式：正常显示 （key3设置）
+                            xianshimoshi = 1;       //显示模式：设置菜单
+							caidanweizhi = 1;       //s-01设置低报警
 							shuruzu[0] = 0;
 							shuruzu[1] = 0;
 							shuruzu[2] = 0;
 							shuruzu[3] = 0;
 							shuruzu[4] = 0;
 							shuruweizhi =4; 							
-							jiaozhunbuzhou =0;
+//							jiaozhunbuzhou =0;
 							dianliubuzhou =0;
 					break;
 				   default: 						
@@ -114,25 +119,28 @@ void KEY_MAIN_FUNC(void){
 				}		
 
 		break;
-		case KEY_4:
-			xianshimoshi = 0;				
+		case KEY_4:                               //KEY_4   ×长按（取消）
+			xianshimoshi = 0;				      //显示模式：正常显示
 			dianliubuzhou =0;	
-		    if(jiaozhunbuzhou >0)
-		    {
-		     	fasong_232[0] =0x5a;
-				fasong_232[1] =0xa5;
-				fasong_232[2] =0x00;
-				fasong_232[3] =0xFe;
-				fasong_232[4] =0x00;
-				fasong_232[5] =0x00;
-				fasong_232[6] =0x00;
-				fasong_232[7] =0x00;
-				fasong_232[8] =0x00;
-				fasong_232[9] =0x01;
-				fasongweizhi= 0;
-				SENSOR_KAISHIFASONG();
-		    }	
-			jiaozhunbuzhou =0;
+        
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
+//        if(jiaozhunbuzhou > 0)                //校准步骤：接收显示值 and 确认
+//		    {
+//		     	fasong_232[0] =0x5a;
+//				fasong_232[1] =0xa5;
+//				fasong_232[2] =0x00;
+//				fasong_232[3] =0xFe;
+//				fasong_232[4] =0x00;
+//				fasong_232[5] =0x00;
+//				fasong_232[6] =0x00;
+//				fasong_232[7] =0x00;
+//				fasong_232[8] =0x00;
+//				fasong_232[9] =0x01;
+//				fasongweizhi= 0;
+//				SENSOR_KAISHIFASONG();
+//		    }	
+//			jiaozhunbuzhou =0;
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++ 
 		break;
 	}
 }

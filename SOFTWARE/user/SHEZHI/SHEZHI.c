@@ -10,8 +10,28 @@
 * (c) 2007 Jiwen Su
 *****************************************************************************/
 #include "includes.h"
+// LRC计算函数（求和取反加1，符合工业常用标准）
+static uint8_t calculate_lrc_correct(const uint8_t* data, uint32_t len) {
+    uint16_t sum = 0; // 用16位避免求和溢出
+    // 1. 所有待校验字节求和
+    for (uint32_t i = 0; i < len; i++) {
+        sum += data[i];
+    }
+    // 2. 取反 + 1（得到补码，即最终LRC值）
+    uint8_t lrc_val = (uint8_t)(~sum + 1);
+    return lrc_val;
+}
 
-
+// 辅助函数：将1个字节转换为2个ASCII字符（如0x3D → '3'（0x33）和 'D'（0x44））
+static void byte_to_ascii(uint8_t byte, uint8_t* ascii_high, uint8_t* ascii_low) {
+    // 高4位转换为ASCII
+    uint8_t high_nibble = (byte >> 4) & 0x0F;
+    *ascii_high = (high_nibble < 10) ? (high_nibble + '0') : (high_nibble - 10 + 'A');
+    // 低4位转换为ASCII
+    uint8_t low_nibble = byte & 0x0F;
+    *ascii_low = (low_nibble < 10) ? (low_nibble + '0') : (low_nibble - 10 + 'A');
+}
+//extern uint8_t uart4_recv_flag;
 //---------------------------------------------------------------------------
 void Shezhi_DY(void){
 u8 i;
@@ -20,102 +40,102 @@ u16 temp2;
 	switch(caidanweizhi){
 		case 1://低报警设置			
 			temp1 = shuruzu[0]*10000+ shuruzu[1]*1000+ shuruzu[2]*100+ shuruzu[3]*10+ shuruzu[4];
-			if((temp1>JCXI_zuixiaoliangcheng)&&(temp1<JCXI_zuidaliangcheng*10)&&(temp1<JCXI_gaobaojing))
+			if((temp1>JCXI_zuixiaoliangcheng)&&(temp1<JCXI_zuidaliangcheng)&&(temp1<JCXI_gaobaojing))
 			{
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
 				JCXI_dibaojing = temp1;
-				fasong_232[0] =0x5a;
-				fasong_232[1] =0xa5;
-				fasong_232[2] =0x00;
-				fasong_232[3] =0xe2;
-				fasong_232[4] =temp1/256;
-				fasong_232[5] =temp1%256;
-				fasong_232[6] =0x00;
-				fasong_232[7] =0x00;
-				fasong_232[8] =0x00;
-				fasong_232[9] =0x01;				
-				SENSOR_KAISHIFASONG();
-				xianshimoshi =3;
+                FLASH_WRITE_PARAMETER();
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++				
+				xianshimoshi =3;                  //显示模式：正确
 			}
-			else
+			else 
 			{
-				xianshimoshi = 4;
+				xianshimoshi = 4;                 //显示模式：错误
 			}
 		break;
 		case 2://高报警设置
 			temp1 = shuruzu[0]*10000+ shuruzu[1]*1000+ shuruzu[2]*100+ shuruzu[3]*10+ shuruzu[4];
-			if((temp1>JCXI_zuixiaoliangcheng)&&(temp1<JCXI_zuidaliangcheng*10.0)&&(temp1>JCXI_dibaojing))
+			if((temp1>JCXI_zuixiaoliangcheng)&&(temp1<JCXI_zuidaliangcheng)&&(temp1>JCXI_dibaojing))
 			{
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
 				JCXI_gaobaojing= temp1;
-						
-				fasong_232[0] =0x5a;
-				fasong_232[1] =0xa5;
-				fasong_232[2] =0x00;
-				fasong_232[3] =0xe1;
-				fasong_232[4] =temp1/256;
-				fasong_232[5] =temp1%256;
-				fasong_232[6] =0x00;
-				fasong_232[7] =0x00;
-				fasong_232[8] =0x00;
-				fasong_232[9] =0x01;				
-				SENSOR_KAISHIFASONG();
-						
-							
-				
-				xianshimoshi =3;
+                FLASH_WRITE_PARAMETER();
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++
+				xianshimoshi =3;                  //显示模式：正确
 			}
 			else
 			{
-				xianshimoshi = 4;
+				xianshimoshi = 4;                 //显示模式：错误
 			}
 			break;
 		case 3://校准	
-			switch(jiaozhunbuzhou)
-				{
-					case 0:
+//			switch(jiaozhunbuzhou)
+//				{
+//					case 0:
 						//确认校准值
-						temp1 = shuruzu[0]*10000+ shuruzu[1]*1000+ shuruzu[2]*100+ shuruzu[3]*10+ shuruzu[4];	
+						temp1 = shuruzu[0]*10000+ shuruzu[1]*1000+ shuruzu[2]*100+ shuruzu[3]*10+ shuruzu[4];
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++        
 						if(temp1<=JCXI_zuidaliangcheng)
 						{
-							fasong_232[0] =0x5a;
-							fasong_232[1] =0xa5;
-							fasong_232[2] =0x00;
-							fasong_232[3] =0xF0;
-							fasong_232[4] =temp1/256;
-							fasong_232[5] =temp1%256;
-							fasong_232[6] =0x00;
-							fasong_232[7] =0x00;
-							fasong_232[8] =0x00;
-							fasong_232[9] =0x01;
-							SENSOR_KAISHIFASONG();
-							jiaozhunbuzhou=1;
+                            if(temp1 == 0){
+                                //55 31 47 30 30 30 30 30 09 34 32 0D 0A
+                                fasong_232[0] =0x55;
+                                fasong_232[1] =0x31;
+                                fasong_232[2] =0x47;
+                                fasong_232[3] =0x30;
+                                fasong_232[4] =0x30;
+                                fasong_232[5] =0x30;
+                                fasong_232[6] =0x30;
+                                fasong_232[7] =0x30;
+                                fasong_232[8] =0x09;
+                                fasong_232[9] =0x34;
+                                fasong_232[10] = 0x33;
+                                fasong_232[11] = 0x0D;
+                                fasong_232[12] = 0x0A;
+                                SENSOR_KAISHIFASONG();                                
+//                                if((wanchengjieshou_232 == TRUE) && (uart4_recv_flag == 1)){
+//                                    xianshimoshi =3;
+//                                    uart4_recv_flag = 0;//重置接收数据类型
+//                                }else{
+//                                    xianshimoshi =4;
+//                                }
+                            }
+                            else{
+                                temp1 = temp1 / 2;
+                                //55 32 47 XX XX 30 30 30 09 YY YY 0D 0A
+                                fasong_232[0] =0x55;
+                                fasong_232[1] =0x32;
+                                fasong_232[2] =0x47;
+                                fasong_232[3] =(temp1 / 10) + '0';
+                                fasong_232[4] =(temp1 % 10) + '0';
+                                fasong_232[5] =0x30;
+                                fasong_232[6] =0x30;
+                                fasong_232[7] =0x30;
+                                fasong_232[8] =0x09;
+                                
+                                // 计算LRC（校验09之前的8字节：索引0-7）
+                                uint8_t lrc_val = calculate_lrc_correct(fasong_232, 8);
+                                // 转换为2个ASCII字符（重点修正：如55 34 47 33 30 30 30 30的LRC计算）
+                                byte_to_ascii(lrc_val, &fasong_232[9], &fasong_232[10]);
+                                
+                                fasong_232[11] = 0x0D;
+                                fasong_232[12] = 0x0A;
+                                
+                                SENSOR_KAISHIFASONG();
+                                Delay_ms(3000);
+//                                if((wanchengjieshou_232 == TRUE) &&(uart4_recv_flag == 2)){
+//                                    xianshimoshi =3;
+//                                    uart4_recv_flag = 0;//重置接收数据类型
+//                                }else{
+//                                    xianshimoshi =4;
+//                                }
+                            }
 						}
 						else
 						{
 							xianshimoshi = 4;
 						}
-					break;
-					case 1:	
-						//空操作计算显示数值方法在传感器文件中
-					break;	
-					case 2:	
-						//确认校准
-						fasong_232[0] =0x5a;
-						fasong_232[1] =0xa5;
-						fasong_232[2] =0x00;
-						fasong_232[3] =0xF2;
-						fasong_232[4] =0x00;
-						fasong_232[5] =0x00;
-						fasong_232[6] =0x00;
-						fasong_232[7] =0x00;
-						fasong_232[8] =0x00;
-						fasong_232[9] =0x01;
-						SENSOR_KAISHIFASONG();
-						jiaozhunbuzhou=0;
-					break;	
-					default:
-					break;
-				
-				}
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++
 		break;
 		case 4://清空系数表
 			fasong_232[0] =0x5a;

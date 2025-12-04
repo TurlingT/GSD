@@ -23,94 +23,42 @@ void SENSOR_KAISHIFASONG(void){
 }
 //---------------------------------------------------------------------------------------
 
+extern int result;
+extern uint8_t uart4_recv_flag;
+float temp =0;
 //---------------------------------------------------------------------------------------
 void SENSOR_DIAOYONG(void){
-    if(wanchengjieshou_232){
-		switch(jieshou_232[3]){
-						case 0xA0:
-							//接收浓度
-							chuanganqizhuangtai = 0;
-							qitinongdu = *((float*)(&(jieshou_232[4])));
-							break;
-						case 0xA1:
-							//接收浓度
-							chuanganqizhuangtai = 2;
-							qitinongdu = *((float*)(&(jieshou_232[4])));
-							break;
-						case 0xA2:
-						//接收浓度
-							chuanganqizhuangtai = 3;
-							qitinongdu = *((float*)(&(jieshou_232[4])));
-							break;
-						case 0xA3:
-						//接收浓度
-							chuanganqizhuangtai = 1;
-							qitinongdu = 100;
-							break;
-						case 0xC0://气体类型
-							JCXI_qitileixing =(jieshou_232[4]);
-							jcxibuzhou = 5;
-							break;	
-						case 0xC1://气体单位
-							JCXI_qitidanwei=(jieshou_232[4]);
-							jcxibuzhou = 6;
-							break;
-						case 0xC2://高报警
-							JCXI_gaobaojing=(jieshou_232[4]<<8)+(jieshou_232[5]);
-							jcxibuzhou = 3;
-							break;
-						case 0xC3://低报警
-							JCXI_dibaojing=(jieshou_232[4]<<8)+(jieshou_232[5]);
-							jcxibuzhou = 4;
-							break;
-						case 0xC4://最大量程
-							JCXI_zuidaliangcheng=(jieshou_232[4]<<8)+(jieshou_232[5]);
-							jcxibuzhou = 1;
-							break;
-					    case 0xC5://最小量程
-							JCXI_zuixiaoliangcheng=(jieshou_232[4]<<8)+(jieshou_232[5]);
-							jcxibuzhou = 2;
-							break;
-						case 0xe1://高报警
-							 xianshimoshi =3;
-							break;
-						case 0xe2://低报警
-							 xianshimoshi =3;
-							break;
-						case 0xFF://清空系数表
-							 xianshimoshi =3;							
-							break;
-						case 0xAA://读取温度							 							
-							break;	
-						case 0xF0://校准接收	
-						      jiaozhunbuzhou = 1;
-							break;
-						case 0xF3://校准接收
-							  jiaozhunxianshi= (jieshou_232[7]<<24)+(jieshou_232[6]<<16)+(jieshou_232[5]<<8)+(jieshou_232[4]);
-							  shuruzu[0] = (u8)(jiaozhunxianshi/10000);
-							  shuruzu[1] = (u8)((jiaozhunxianshi - shuruzu[0] *10000)/1000);
-							  shuruzu[2] = (u8)((jiaozhunxianshi - shuruzu[0] *10000 - shuruzu[1]*1000)/100);
-							  shuruzu[3] = (u8)((jiaozhunxianshi - shuruzu[0] *10000 - shuruzu[1]*1000 - shuruzu[2] *100)/10);
-							  shuruzu[4] = (u8)((u32)(jiaozhunxianshi)%10);							  
-							jiaozhunbuzhou = 2;
-							break;
-						case 0xF2://确认校准
-								xianshimoshi =3;	
-							break;
-						case 0xFe://确认校准
-								xianshimoshi =0;	
-							break;
-
-							
-						default :
-							
-						return;
-				}	
-			wanchengjieshou_232 = FALSE;
-			chuanganqijieshou =0;
-    	}
+    if(wanchengjieshou_232 == TRUE){
+        
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
+        
+        
+        result = (int)(parse_uart4_data()*10000);
+        temp = ((float)(result*20))/10000;
+        if(temp<3.0){
+            qitinongdu = 0;
+        }
+        else{
+            qitinongdu = temp;
+        }
+        
+        if(qitinongdu >= JCXI_dibaojing && qitinongdu < JCXI_gaobaojing){
+            chuanganqizhuangtai = 2;
+        }
+        else if(qitinongdu >= JCXI_gaobaojing && qitinongdu <= JCXI_zuidaliangcheng){
+            chuanganqizhuangtai =3;
+        }
+        else if(qitinongdu < JCXI_dibaojing)
+        {
+            chuanganqizhuangtai =0;
+        }
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++
+//        lcd_shuzhixianshi();	
+		wanchengjieshou_232 = FALSE;
+		chuanganqijieshou =0;
+    }
 	else{
-		  if(chuanganqijieshou > 10000 ){
+		  if(chuanganqijieshou > 3000 ){
 				chuanganqizhuangtai = 1;				
 		  	}else
 		  		{
@@ -125,103 +73,15 @@ void SENSOR_DIAOYONG(void){
 
 //*******************************************************************************
 void sensor_chushihuachuanganqi(void){
-  	switch(jcxibuzhou){
-					case 0:
-						fasong_232[0] =0x5a;
-						fasong_232[1] =0xa5;
-						fasong_232[2] =0x00;
-						fasong_232[3] =0xc4;
-						fasong_232[4] =0x00;
-						fasong_232[5] =0x00;
-						fasong_232[6] =0x00;
-						fasong_232[7] =0x00;
-						fasong_232[8] =0x00;
-						fasong_232[9] =0x01;
-						fasongweizhi= 0;
-						SENSOR_KAISHIFASONG();
-
-						break;
-					case 1:
-						fasong_232[0] =0x5a;
-						fasong_232[1] =0xa5;
-						fasong_232[2] =0x00;
-						fasong_232[3] =0xc5;
-						fasong_232[4] =0x00;
-						fasong_232[5] =0x00;
-						fasong_232[6] =0x00;
-						fasong_232[7] =0x00;
-						fasong_232[8] =0x00;
-						fasong_232[9] =0x01;
-						fasongweizhi= 0;
-						SENSOR_KAISHIFASONG();
-
-						break;
-					case 2:
-						fasong_232[0] =0x5a;
-						fasong_232[1] =0xa5;
-						fasong_232[2] =0x00;
-						fasong_232[3] =0xc2;
-						fasong_232[4] =0x00;
-						fasong_232[5] =0x00;
-						fasong_232[6] =0x00;
-						fasong_232[7] =0x00;
-						fasong_232[8] =0x00;
-						fasong_232[9] =0x01;
-						fasongweizhi= 0;
-						SENSOR_KAISHIFASONG();
-
-						break;
-					case 3:
-						fasong_232[0] =0x5a;
-						fasong_232[1] =0xa5;
-						fasong_232[2] =0x00;
-						fasong_232[3] =0xc3;
-						fasong_232[4] =0x00;
-						fasong_232[5] =0x00;
-						fasong_232[6] =0x00;
-						fasong_232[7] =0x00;
-						fasong_232[8] =0x00;
-						fasong_232[9] =0x01;
-						fasongweizhi= 0;
-						SENSOR_KAISHIFASONG();
-
-						break;	
-					case 4:
-						fasong_232[0] =0x5a;
-						fasong_232[1] =0xa5;
-						fasong_232[2] =0x00;
-						fasong_232[3] =0xc0;
-						fasong_232[4] =0x00;
-						fasong_232[5] =0x00;
-						fasong_232[6] =0x00;
-						fasong_232[7] =0x00;
-						fasong_232[8] =0x00;
-						fasong_232[9] =0x01;						
-						fasongweizhi= 0;
-						SENSOR_KAISHIFASONG();
-
-						break;
-					case 5:
-						fasong_232[0] =0x5a;
-						fasong_232[1] =0xa5;
-						fasong_232[2] =0x00;
-						fasong_232[3] =0xc1;
-						fasong_232[4] =0x00;
-						fasong_232[5] =0x00;
-						fasong_232[6] =0x00;
-						fasong_232[7] =0x00;
-						fasong_232[8] =0x00;
-						fasong_232[9] =0x01;
-						fasongweizhi= 0;
-						SENSOR_KAISHIFASONG();
-
-						break;
-					case 6:
-						fasongweizhi= 6;
-						break;
-				  	default :
-					return;
-	}
+//++++++++++++++++++++++++++++++++++++++++++++CHANGE++++++++++++++++++++++++++++++++++++++++++++++++
+    JCXI_qitileixing = 0x01;			//甲烷
+    JCXI_qitidanwei= 0x03;				//%LEL           00无01ppm02vol
+//    JCXI_gaobaojing= 0x32;              //高报警50
+//    JCXI_dibaojing= 0x19;               //低报警25
+    JCXI_zuidaliangcheng= 0x64;          //最大量程100
+	JCXI_zuixiaoliangcheng= 0x00;        //最小量程0
+//++++++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++++++  
+ 
 }
 
 //*******************************************************************************

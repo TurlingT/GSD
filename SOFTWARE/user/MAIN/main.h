@@ -26,6 +26,8 @@ void Delay_1us(void); // 延时1us
 void Delay_us(u8 dat);
 void Delay_1ms(void); // 延时1ms
 void Delay_ms(u16 ms); //延时ms
+
+float parse_uart4_data(void);
 // copy length data from apData to aid_addr
 //-----------------------------------------------------------------------
 #endif

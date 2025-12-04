@@ -44,21 +44,15 @@ void SHOW_PANDUAN(void){
 void device_load(void){
  	u8 i;
  	bool temp =TRUE;
-	for(i=60;i>0;i--)
+	for(i=6;i>0;i--)
 	{
 	 	LCD_chushihua(i);
-		if(i<50)
-		{
-			sensor_chushihuachuanganqi();//初始化传感器信息
-		}
-		Delay_ms(100);
-		SENSOR_DIAOYONG();
-		Delay_ms(900);
-		if(JCXI_qitileixing == 2){
-			//如果是氧气输出15.15ma
-			DIANLIU_420MA_SET((u16)((JCXI_420ma20-JCXI_420ma4)/JCXI_zuidaliangcheng*20.9 + JCXI_420ma4));
-		}
+//++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
+        Delay_ms(2200);               //Delay_ms(1000);
+      
 	}
+    sensor_chushihuachuanganqi();
+//+++++++++++++++++++++++++++++++++++++++++CHANGE_END+++++++++++++++++++++++++++++++++++++++++   
  	if((JCXI_dibaojing!=255)&&(JCXI_gaobaojing!=255)&&(JCXI_qitileixing!=255)&&(JCXI_qitidanwei!=255)&&(JCXI_zuidaliangcheng!=255)&&(JCXI_zuixiaoliangcheng!=255)){
 		temp =FALSE;
 	}
@@ -73,6 +67,35 @@ void device_load(void){
 }
 //------------------------------------------------------------------
 
+#include <stdlib.h>                     //atof
+
+#define UART_RX_BUF_MAX_LEN 100 // 接收缓冲区的最大长度
+uint8_t uart4_recv_buf[UART_RX_BUF_MAX_LEN]={0};
+
+uint8_t data[UART_RX_BUF_MAX_LEN]={0};
+uint8_t recv_cnt = 0;  // 接收计数
+int result = 0;
+
+char num_str[7];
+
+
+// 数据解析函数：将接收缓冲区转换为浮点数
+float parse_uart4_data(void) {
+      // 存储 "0.0680"（6 个字符 + 结束符）
+    
+    // 提取个位（data[0]）和小数点后四位（data[2]~data[5]）
+    num_str[0] = data[0];          // '0'
+    num_str[1] = '.';                        // 小数点
+    num_str[2] = data[2];          // '0'
+    num_str[3] = data[3];          // '6'
+    num_str[4] = data[4];          // '8'
+    num_str[5] = data[5];          // '0'
+    num_str[6] = '\0';                     // 字符串结束符
+    
+    // 字符串转浮点数
+    return  atof(num_str);
+   
+}
 
 
 //------------------------------------------------------------------
@@ -81,13 +104,13 @@ int main(void){
     SYS_INIT();
 	device_load();
 	while(1)
-	{
-		JIARE_DIAOYONG();//加热器
-		SHOW_PANDUAN();//判断有显无显
-		SENSOR_DIAOYONG();//传感器
-		SHUCHU_DIAOYONG();//信号输出
-		LCD_shuchu();//显示输出
-		KEY_MAIN_FUNC();//按键处理
+	{     
+		JIARE_DIAOYONG();           //加热器
+		SHOW_PANDUAN();             //判断有显无显
+		SENSOR_DIAOYONG();          //传感器
+		SHUCHU_DIAOYONG();          //信号输出
+		LCD_shuchu();               //显示输出    调用lcd_shuzhixianshi
+		KEY_MAIN_FUNC();            //按键处理
 	}
 }
 //------------------------------------------------------------------
