@@ -78,24 +78,58 @@ int result = 0;
 
 char num_str[7];
 
+extern uint16_t uart4_recv_len;
+#include <math.h>   // 如果你希望在失败时返回 NAN
 
-// 数据解析函数：将接收缓冲区转换为浮点数
-float parse_uart4_data(void) {
-      // 存储 "0.0680"（6 个字符 + 结束符）
-    
-    // 提取个位（data[0]）和小数点后四位（data[2]~data[5]）
-    num_str[0] = data[0];          // '0'
-    num_str[1] = '.';                        // 小数点
-    num_str[2] = data[2];          // '0'
-    num_str[3] = data[3];          // '6'
-    num_str[4] = data[4];          // '8'
-    num_str[5] = data[5];          // '0'
-    num_str[6] = '\0';                     // 字符串结束符
-    
-    // 字符串转浮点数
-    return  atof(num_str);
-   
+// 提取 data[0..uart4_recv_len-1] 中 TAB(0x09) 或 CR(0x0D) 前的数字串（仅保留 [0-9] 和 '.'）
+// 返回浮点值；失败返回 NAN（若不想用 NAN，可改为返回 0 并配套状态码）
+float parse_uart4_data(void)
+{
+    uint16_t len = uart4_recv_len;
+    if (len == 0 || len > UART_RX_BUF_MAX_LEN) {
+        return NAN;
+    }
+
+    // 复制到局部缓冲，避免解析时被中断修改
+    char local[UART_RX_BUF_MAX_LEN + 1];
+    for (uint16_t i = 0; i < len && i < UART_RX_BUF_MAX_LEN; i++) {
+        local[i] = (char)data[i];
+    }
+    local[(len < UART_RX_BUF_MAX_LEN) ? len : UART_RX_BUF_MAX_LEN] = '\0';
+
+    // 找到数字段的结束位置（遇到 TAB 或 CR 停）
+    uint16_t end = 0;
+    while (end < len && local[end] != '\t' && local[end] != '\r') {
+        end++;
+    }
+
+    // 提取数字字符（允许 0-9 和一个小数点'.'）
+    char num_str[24];              // 足够容纳 "100.0" 等，按需加大
+    uint16_t j = 0;
+    uint8_t dot_seen = 0;
+
+    for (uint16_t i = 0; i < end && j < sizeof(num_str) - 1; i++) {
+        char c = local[i];
+        if (c >= '0' && c <= '9') {
+            num_str[j++] = c;
+        } else if (c == '.') {
+            if (dot_seen) continue; // 仅允许一个小数点
+            dot_seen = 1;
+            num_str[j++] = c;
+        } else {
+            // 非数字且非点，直接停止（更严格：也可直接 break）
+            break;
+        }
+    }
+
+    if (j == 0) {
+        return NAN;
+    }
+    num_str[j] = '\0';
+
+    return atof(num_str);
 }
+
 
 
 //------------------------------------------------------------------
