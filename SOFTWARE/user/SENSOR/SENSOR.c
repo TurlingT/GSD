@@ -33,8 +33,9 @@ void SENSOR_DIAOYONG(void){
 //++++++++++++++++++++++++++++++++++++++++++CHANGE+++++++++++++++++++++++++++++++++++++++++
         
         
-        result = (int)(parse_uart4_data()*10000);
-        temp = ((float)(result*20))/10000;
+       // result = (int)(parse_uart4_data()*10000);
+        result = (int)(parse_uart4_data()*10);
+        temp = ((float)result)/10;
         if(temp<3.0){
             qitinongdu = 0;
         }
@@ -74,7 +75,7 @@ void SENSOR_DIAOYONG(void){
 //*******************************************************************************
 void sensor_chushihuachuanganqi(void){
 //++++++++++++++++++++++++++++++++++++++++++++CHANGE++++++++++++++++++++++++++++++++++++++++++++++++
-    JCXI_qitileixing = 0x01;			//¼×Íé
+    JCXI_qitileixing = 0x00;			//¼×Íé
     JCXI_qitidanwei= 0x03;				//%LEL           00ÎÞ01ppm02vol
 //    JCXI_gaobaojing= 0x32;              //¸ß±¨¾¯50
 //    JCXI_dibaojing= 0x19;               //µÍ±¨¾¯25

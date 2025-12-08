@@ -101,7 +101,7 @@ u16 temp2;
 //                                }
                             }
                             else{
-                                temp1 = temp1 / 2;
+                                temp1 = (temp1 / 5) - 1;
                                 //55 32 47 XX XX 30 30 30 09 YY YY 0D 0A
                                 fasong_232[0] =0x55;
                                 fasong_232[1] =0x32;
